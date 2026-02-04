@@ -15,12 +15,13 @@ public class adminProfile extends javax.swing.JFrame {
     
     public adminProfile() {
         initComponents();
+        displayData();
     }
 
    public void displayData() {
-        Name.setText(name);   // Make sure you renamed jLabel18 to p_name
-        Email.setText(email); // Make sure you renamed jLabel19 to p_email
-        Type.setText(type);   // Make sure you renamed jLabel17 to p_type
+      Name.setText(config.session.name);
+      Email.setText(config.session.email);
+      Type.setText(config.session.type);
     }
    
     @SuppressWarnings("unchecked")

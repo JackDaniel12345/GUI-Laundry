@@ -246,12 +246,6 @@ public class adminDashboard extends javax.swing.JFrame {
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
         adminProfile ap = new adminProfile();
-
-        // This transfers data from the dashboard to the profile page
-        ap.name = admin_name.getText(); 
-        ap.email = admin_email.getText();
-        ap.type = "Admin";
-
         ap.setVisible(true);
         ap.displayData();
         this.dispose();

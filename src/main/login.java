@@ -9,6 +9,7 @@ import Admin.adminDashboard;
 import Customer.customerDashboard;
 import config.config;
 import javax.swing.JOptionPane;
+import config.session; // This tells the code that the Session class is in the config package
 
 /**
  *
@@ -219,6 +220,11 @@ public class login extends javax.swing.JFrame {
         java.sql.ResultSet rs = cn.getData(sql);
         
         if (rs.next()) {
+          session.uid = rs.getInt("u_id");   
+          session.name = rs.getString("name"); 
+          session.email = rs.getString("email"); 
+          session.type = rs.getString("type");
+                    
             String status = rs.getString("status");
             String userRole = rs.getString("type");
 
