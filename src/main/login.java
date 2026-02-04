@@ -6,6 +6,7 @@
 package main;
 
 import Admin.adminDashboard;
+import Customer.customerDashboard;
 import config.config;
 import javax.swing.JOptionPane;
 
@@ -208,18 +209,45 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_emailActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        config cn = new config();
-        String sql = "SELECT * FROM tbl_users WHERE email = ? AND password = ? AND status = ?";
-        if(cn.authenticate(sql, email.getText(), pass.getText(), "Active")){
-            JOptionPane.showMessageDialog(null, "LOGIN SUCCESS!");
-            
-            adminDashboard ad = new adminDashboard();
-            ad.setVisible(true);
-            this.dispose();
-        }else{
+       config cn = new config();
+    
+    // It's safer to use a PreparedStatement approach, but using your current style:
+    String sql = "SELECT * FROM tbl_users WHERE email = '" + email.getText() + "' "
+               + "AND password = '" + pass.getText() + "'";
+    
+    try {
+        java.sql.ResultSet rs = cn.getData(sql);
+        
+        if (rs.next()) {
+            String status = rs.getString("status");
+            String userRole = rs.getString("type");
+
+            // Check if the account is actually Active
+            if (!status.equalsIgnoreCase("Active")) {
+                JOptionPane.showMessageDialog(null, "Your account is " + status + ". Please contact the Admin.");
+            } else {
+                JOptionPane.showMessageDialog(null, "LOGIN SUCCESS!");
+                
+                // Route based on the 'type' column in your database
+                if (userRole.equalsIgnoreCase("Admin")) {
+                    adminDashboard ad = new adminDashboard();
+                    ad.setVisible(true);
+                    this.dispose();
+                } else if (userRole.equalsIgnoreCase("Customer")) {
+                    customerDashboard cd = new customerDashboard();
+                    cd.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Account type '" + userRole + "' not recognized.");
+                }
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "INVALID CREDENTIALS!");
         }
-        
+    } catch (java.sql.SQLException ex) {
+        // This catch block handles errors if the SQL query fails or connection is lost
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage());
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
