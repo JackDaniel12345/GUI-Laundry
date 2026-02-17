@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package Admin;
+import config.session;
+import javax.swing.JOptionPane;
+import main.login;
 
 /**
  *
@@ -11,18 +14,32 @@ package Admin;
  */
 public class adminProfile extends javax.swing.JFrame {
 
-    public String name, email, type;
+    public String name, email, type, status;
     
     public adminProfile() {
+    // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
         initComponents();
         displayData();
     }
 
    public void displayData() {
-      Name.setText(config.session.name);
-      Email.setText(config.session.email);
-      Type.setText(config.session.type);
-    }
+   // These work because they are likely already in your login code
+    Name.setText(config.session.name);
+    Email.setText(config.session.email);
+    Type.setText(config.session.type);
+    
+    // Add these lines to fix the blank fields
+    uid.setText("" + config.session.uid); 
+    password.setText(config.session.password);  // Check variable name in Navigator
+    Status.setText(config.session.Status); 
+   }// Check variable name in Navigator
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -49,12 +66,25 @@ public class adminProfile extends javax.swing.JFrame {
         admin_name = new javax.swing.JLabel();
         admin_email = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        Type = new javax.swing.JLabel();
         Name = new javax.swing.JLabel();
         Email = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        Type = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        admin_name1 = new javax.swing.JLabel();
+        admin_email1 = new javax.swing.JLabel();
+        uid = new javax.swing.JLabel();
+        password = new javax.swing.JLabel();
+        Status = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -103,9 +133,11 @@ public class adminProfile extends javax.swing.JFrame {
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 110));
 
         jPanel2.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("ADMIN DASHBOARD");
+        jLabel4.setText("ADMIN PROFILE");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel5.setText("USERS");
@@ -114,27 +146,35 @@ public class adminProfile extends javax.swing.JFrame {
                 jLabel5MouseClicked(evt);
             }
         });
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 103, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel6.setText("LAUNDRYORDERS");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 174, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel7.setText("ABOUT US");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 246, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel8.setText("CONTACT");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 318, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/customer-removebg-preview.png"))); // NOI18N
         jLabel2.setText("jLabel2");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 93, 30, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/laundryorders-removebg-preview.png"))); // NOI18N
         jLabel9.setText("jLabel2");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 164, 30, -1));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/aboutus-removebg-preview.png"))); // NOI18N
         jLabel10.setText("jLabel2");
+        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 236, 30, -1));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/contact-removebg-preview.png"))); // NOI18N
         jLabel11.setText("jLabel2");
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 308, 30, -1));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
         jLabel14.setText("PROFILE");
@@ -143,55 +183,7 @@ public class adminProfile extends javax.swing.JFrame {
                 jLabel14MouseClicked(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel14))))
-                .addContainerGap(49, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel4)
-                .addGap(43, 43, 43)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addComponent(jLabel14)
-                .addContainerGap(121, Short.MAX_VALUE))
-        );
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 380, -1, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 280, 520));
 
@@ -200,28 +192,73 @@ public class adminProfile extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        admin_name.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        admin_name.setText("NAME:");
-        jPanel5.add(admin_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 58, -1, -1));
+        admin_name.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_name.setText("USER ID:");
+        jPanel5.add(admin_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
-        admin_email.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        admin_email.setText("EMAIL:");
-        jPanel5.add(admin_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
+        admin_email.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_email.setText("PASSWORD:");
+        jPanel5.add(admin_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel16.setText("TYPE:");
-        jPanel5.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel16.setText("STATUS:");
+        jPanel5.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, -1));
 
-        Type.setText("__________________________________________");
-        jPanel5.add(Type, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, -1, 40));
+        Name.setText("__________________________");
+        jPanel5.add(Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 190, 40));
 
-        Name.setText("__________________________________________");
-        jPanel5.add(Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, -1, 40));
+        Email.setText("__________________________");
+        jPanel5.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 200, 40));
 
-        Email.setText("__________________________________________");
-        jPanel5.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, 40));
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 470, 380));
+        jPanel5.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, 200, 200));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel17.setText("TYPE:");
+        jPanel5.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
+
+        Type.setText("__________________________");
+        jPanel5.add(Type, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 200, 40));
+
+        jButton2.setBackground(new java.awt.Color(0, 102, 255));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("EDIT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 270, 101, 35));
+
+        admin_name1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_name1.setText("NAME:");
+        jPanel5.add(admin_name1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+
+        admin_email1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_email1.setText("EMAIL:");
+        jPanel5.add(admin_email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+
+        uid.setText("__________________________");
+        jPanel5.add(uid, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
+
+        password.setText("______________________");
+        jPanel5.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 170, -1, -1));
+
+        Status.setText("__________________________");
+        jPanel5.add(Status, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 190, -1));
+
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 580, 440));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/adminbg.jpg"))); // NOI18N
         jLabel12.setText("jLabel12");
@@ -270,6 +307,25 @@ public class adminProfile extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jLabel14MouseClicked
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        
+    }//GEN-LAST:event_formWindowActivated
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+     editProfile ep = new editProfile();
+    
+    // This fills the text fields in the Edit form with current session data
+    ep.idField.setText("" + config.session.uid); 
+    ep.nameField.setText(config.session.name);
+    ep.emailField.setText(config.session.email);
+    ep.passwordField.setText(config.session.password);
+    ep.typeBox.setSelectedItem(config.session.type); // Sets the dropdown
+    ep.statusField.setText(config.session.Status);
+    
+    ep.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -308,16 +364,21 @@ public class adminProfile extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Email;
     private javax.swing.JLabel Name;
+    private javax.swing.JLabel Status;
     private javax.swing.JLabel Type;
     private javax.swing.JLabel admin_email;
+    private javax.swing.JLabel admin_email1;
     private javax.swing.JLabel admin_name;
+    private javax.swing.JLabel admin_name1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -331,5 +392,8 @@ public class adminProfile extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel password;
+    private javax.swing.JLabel uid;
     // End of variables declaration//GEN-END:variables
 }

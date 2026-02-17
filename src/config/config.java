@@ -1,20 +1,16 @@
 package config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import net.proteanit.sql.DbUtils;
+import javax.swing.JOptionPane;
 
 public class config {
-//Connection Method to SQLITE
-public static Connection connectDB() {
+
+    public static Connection connectDB() {
         Connection con = null;
         try {
-            Class.forName("org.sqlite.JDBC"); // Load the SQLite JDBC driver
-            con = DriverManager.getConnection("jdbc:sqlite:Clothing_db.db"); // Establish connection
+            Class.forName("org.sqlite.JDBC");
+            con = DriverManager.getConnection("jdbc:sqlite:Clothing_db.db");
             System.out.println("Connection Successful");
         } catch (Exception e) {
             System.out.println("Connection Failed: " + e);
@@ -22,76 +18,63 @@ public static Connection connectDB() {
         return con;
     }
 
-public void addRecord(String sql, Object... values) {
-    try (Connection conn = this.connectDB(); // Use the connectDB method
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-        // Loop through the values and set them in the prepared statement dynamically
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] instanceof Integer) {
-                pstmt.setInt(i + 1, (Integer) values[i]); // If the value is Integer
-            } else if (values[i] instanceof Double) {
-                pstmt.setDouble(i + 1, (Double) values[i]); // If the value is Double
-            } else if (values[i] instanceof Float) {
-                pstmt.setFloat(i + 1, (Float) values[i]); // If the value is Float
-            } else if (values[i] instanceof Long) {
-                pstmt.setLong(i + 1, (Long) values[i]); // If the value is Long
-            } else if (values[i] instanceof Boolean) {
-                pstmt.setBoolean(i + 1, (Boolean) values[i]); // If the value is Boolean
-            } else if (values[i] instanceof java.util.Date) {
-                pstmt.setDate(i + 1, new java.sql.Date(((java.util.Date) values[i]).getTime())); // If the value is Date
-            } else if (values[i] instanceof java.sql.Date) {
-                pstmt.setDate(i + 1, (java.sql.Date) values[i]); // If it's already a SQL Date
-            } else if (values[i] instanceof java.sql.Timestamp) {
-                pstmt.setTimestamp(i + 1, (java.sql.Timestamp) values[i]); // If the value is Timestamp
-            } else {
-                pstmt.setString(i + 1, values[i].toString()); // Default to String for other types
+    // Simplified addRecord using setObject (just like your friend probably does)
+    public void addRecord(String sql, Object... values) {
+        try (Connection conn = connectDB(); 
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < values.length; i++) {
+                pstmt.setObject(i + 1, values[i]);
             }
+            pstmt.executeUpdate();
+            System.out.println("Record added successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error adding record: " + e.getMessage());
         }
-
-        pstmt.executeUpdate();
-        System.out.println("Record added successfully!");
-    } catch (SQLException e) {
-        System.out.println("Error adding record: " + e.getMessage());
     }
-}
 
-
- public boolean authenticate(String sql, Object... values) {
-    try (Connection conn = connectDB();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-        for (int i = 0; i < values.length; i++) {
-            pstmt.setObject(i + 1, values[i]);
+    public void displayData(String sql, javax.swing.JTable table, Object... values) {
+        try (Connection conn = connectDB(); 
+             PreparedStatement pstmt = conn.prepareStatement(sql); 
+             ResultSet rs = pstmt.executeQuery()) {
+            
+            // This transfers the data to your table and closes the connection immediately after
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (SQLException e) {
+            System.out.println("Display Error: " + e.getMessage());
         }
+    }
 
-        try (ResultSet rs = pstmt.executeQuery()) {
-            if (rs.next()) {
-                return true;
+    public void deleteRecord(int id, String table, String column) {
+       String sql = "DELETE FROM " + table + " WHERE " + column + " = ?";
+        try (Connection conn = connectDB(); 
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, id);
+            int rowsDeleted = pstmt.executeUpdate();
+            
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(null, "Successfully deleted!");
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Delete Error: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Login Error: " + e.getMessage());
     }
-    return false;
-}
-
- public void displayData(String sql, javax.swing.JTable table) {
-    try (Connection conn = connectDB();
-         PreparedStatement pstmt = conn.prepareStatement(sql);
-         ResultSet rs = pstmt.executeQuery()) {
-        
-        // This line automatically maps the Resultset to your JTable
-        table.setModel(DbUtils.resultSetToTableModel(rs));
-        
-    } catch (SQLException e) {
-        System.out.println("Error displaying data: " + e.getMessage());
+    public int insertData(String sql){
+  // Try-with-resources ensures the connection and statement close automatically
+        try (Connection conn = connectDB(); 
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.executeUpdate();
+            System.out.println("Inserted Successfully!");
+            return 1;
+        } catch (SQLException ex) {
+            System.out.println("Insert Error: " + ex.getMessage());
+            return 0;
+        }
     }
-}
-public ResultSet getData(String sql) throws SQLException {
-    Connection conn = connectDB(); // Call your existing method to get a connection
-    Statement stmt = conn.createStatement();
-    ResultSet rst = stmt.executeQuery(sql);
-    return rst;
-}
+    public ResultSet getData(String sql) throws SQLException {
+    Connection conn = connectDB();
+        Statement st = conn.createStatement();
+        return st.executeQuery(sql);
+    }
 }

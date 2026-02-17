@@ -210,48 +210,55 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_emailActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       config cn = new config();
-    
-    // It's safer to use a PreparedStatement approach, but using your current style:
-    String sql = "SELECT * FROM tbl_users WHERE email = '" + email.getText() + "' "
-               + "AND password = '" + pass.getText() + "'";
-    
-    try {
-        java.sql.ResultSet rs = cn.getData(sql);
-        
-        if (rs.next()) {
-          session.uid = rs.getInt("u_id");   
-          session.name = rs.getString("name"); 
-          session.email = rs.getString("email"); 
-          session.type = rs.getString("type");
-                    
-            String status = rs.getString("status");
-            String userRole = rs.getString("type");
+      String userEmail = email.getText();
+    String userPass = pass.getText();
 
-            // Check if the account is actually Active
-            if (!status.equalsIgnoreCase("Active")) {
-                JOptionPane.showMessageDialog(null, "Your account is " + status + ". Please contact the Admin.");
-            } else {
-                JOptionPane.showMessageDialog(null, "LOGIN SUCCESS!");
+    // 1. Check if fields are empty first
+    if (userEmail.isEmpty() || userPass.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+        return;
+    }
+
+    // 2. Use a safe query style
+    String sql = "SELECT * FROM tbl_users WHERE email = ? AND password = ?";
+    
+    // 3. Open connection, run query, and AUTO-CLOSE (this prevents the lock!)
+    try (java.sql.Connection conn = config.connectDB();
+         java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        pstmt.setString(1, userEmail);
+        pstmt.setString(2, userPass);
+        
+        try (java.sql.ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                // Set Session data
+                session.uid = rs.getInt("u_id");   
+                session.name = rs.getString("name"); 
+                session.email = rs.getString("email"); 
+                session.type = rs.getString("type");
+                session.Status = rs.getString("status");   // Make sure column names match DB
+                session.password = rs.getString("password"); // Ensure this matches DB
                 
-                // Route based on the 'type' column in your database
-                if (userRole.equalsIgnoreCase("Admin")) {
-                    adminDashboard ad = new adminDashboard();
-                    ad.setVisible(true);
-                    this.dispose();
-                } else if (userRole.equalsIgnoreCase("Customer")) {
-                    customerDashboard cd = new customerDashboard();
-                    cd.setVisible(true);
-                    this.dispose();
+                String status = rs.getString("status");
+                String userRole = rs.getString("type");
+
+                if (!status.equalsIgnoreCase("Active")) {
+                    JOptionPane.showMessageDialog(null, "Your account is " + status + ". Contact Admin.");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Account type '" + userRole + "' not recognized.");
+                    JOptionPane.showMessageDialog(null, "LOGIN SUCCESS!");
+                    
+                    if (userRole.equalsIgnoreCase("Admin")) {
+                        new Admin.adminDashboard().setVisible(true);
+                    } else {
+                        new Customer.customerDashboard().setVisible(true);
+                    }
+                    this.dispose();
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "INVALID CREDENTIALS!");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "INVALID CREDENTIALS!");
         }
     } catch (java.sql.SQLException ex) {
-        // This catch block handles errors if the SQL query fails or connection is lost
         JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage());
     }
     }//GEN-LAST:event_jButton1ActionPerformed

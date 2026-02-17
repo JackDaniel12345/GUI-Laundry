@@ -6,6 +6,10 @@
 package Admin;
 
 import config.config;
+import config.session;   // Add this to fix the session error
+import main.login; 
+import javax.swing.table.TableModel;// Add this to fix the login error
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,14 +21,24 @@ public class usersForm extends javax.swing.JFrame {
      * Creates new form usersForm
      */
     public usersForm() {
-        initComponents();
-        displayUser();
+        // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
+    
+    initComponents();
+    displayUser();
     }
     
     void displayUser(){
-        config con = new config();
-        String sql = "SELECT *FROM tbl_users";
-        con.displayData(sql, userTable);
+     config con = new config();
+    String sql = "SELECT u_id, name, email, type, status FROM tbl_users";
+    // Adding the empty comma at the end satisfies the Object... values parameter
+    con.displayData(sql, userTable);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,6 +53,11 @@ public class usersForm extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        search = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
@@ -60,6 +79,11 @@ public class usersForm extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -67,6 +91,57 @@ public class usersForm extends javax.swing.JFrame {
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, -1, -1));
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton2.setBackground(new java.awt.Color(0, 102, 255));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("SEARCH");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 20, 101, 35));
+
+        jButton3.setBackground(new java.awt.Color(0, 102, 255));
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("ADD");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 101, 35));
+
+        jButton4.setBackground(new java.awt.Color(0, 102, 255));
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("EDIT");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 101, 35));
+
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
+        jPanel7.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 220, 40));
+
+        jButton5.setBackground(new java.awt.Color(0, 102, 255));
+        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setText("DELETE");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 101, 35));
 
         userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -81,7 +156,7 @@ public class usersForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(userTable);
 
-        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 660, 480));
+        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 660, 420));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/adminbg.jpg"))); // NOI18N
         jLabel12.setText("jLabel12");
@@ -268,6 +343,89 @@ public class usersForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jLabel5MouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+      config con = new config();
+    String sql = "SELECT u_id, name, email, type, status FROM tbl_users WHERE "
+               + "u_id LIKE ? OR name LIKE ? OR email LIKE ?";
+    
+    String searchVal = "%" + search.getText() + "%";
+    
+    // This calls the SAME method but with 3 values
+    con.displayData(sql, userTable, searchVal, searchVal, searchVal);
+    searchActionPerformed(null);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       adduser au = new adduser();
+       au.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       int rowIndex = userTable.getSelectedRow(); // Make sure this matches your table name
+
+    if(rowIndex < 0){
+        JOptionPane.showMessageDialog(null, "Please select an account to edit!");
+    } else {
+        try {
+            TableModel model = userTable.getModel();
+            edituser ed = new edituser();
+
+            // Set the fields using correct indices (0-4)
+            ed.idField.setText("" + model.getValueAt(rowIndex, 0));
+            ed.nameField.setText("" + model.getValueAt(rowIndex, 1));
+            ed.emailField.setText("" + model.getValueAt(rowIndex, 2));
+            ed.typeBox.setSelectedItem("" + model.getValueAt(rowIndex, 3));
+            ed.statusField.setText("" + model.getValueAt(rowIndex, 4));
+
+            // Show the edit form and close the current one
+            ed.setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+    }
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+      int rowIndex = userTable.getSelectedRow();
+    
+    if(rowIndex < 0){
+        JOptionPane.showMessageDialog(null, "Please select an item to delete!");
+    } else {
+        TableModel model = userTable.getModel();
+        Object value = model.getValueAt(rowIndex, 0);
+        String id = value.toString();
+        
+        int a = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete ID: " + id + "?");
+        if(a == JOptionPane.YES_OPTION){
+            config conf = new config();
+            int t_id = Integer.parseInt(id);
+            conf.deleteRecord(t_id, "tbl_users", "u_id");
+            
+            // This refreshes the table so the deleted row disappears instantly!
+            displayUser();
+        }
+    }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       
+    }//GEN-LAST:event_formWindowActivated
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+     config con = new config();
+    // Adding '%' wildcards ensures the search finds partial matches in the database
+    String searchVal = "%" + search.getText() + "%"; 
+    
+    // Using '?' placeholders is the safest way to prevent SQL injection
+    String sql = "SELECT u_id, name, email, type, status FROM tbl_users WHERE "
+               + "u_id LIKE ? OR name LIKE ? OR email LIKE ?";
+               
+    // This matches the (String, JTable, Object...) signature in your config class
+    con.displayData(sql, userTable, searchVal, searchVal, searchVal);
+    }//GEN-LAST:event_searchActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -305,6 +463,10 @@ public class usersForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -326,6 +488,7 @@ public class usersForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField search;
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
