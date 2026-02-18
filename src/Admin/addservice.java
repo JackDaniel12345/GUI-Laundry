@@ -5,7 +5,9 @@
  */
 package Admin;
 import config.config;
+import config.session;
 import javax.swing.JOptionPane;
+import main.login;
 
 /**
  *
@@ -17,6 +19,14 @@ public class addservice extends javax.swing.JFrame {
      * Creates new form addservice
      */
     public addservice() {
+          // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
         initComponents();
     }
 
