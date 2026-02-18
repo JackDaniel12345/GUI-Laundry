@@ -33,15 +33,21 @@ public class config {
     }
 
     public void displayData(String sql, javax.swing.JTable table, Object... values) {
-        try (Connection conn = connectDB(); 
-             PreparedStatement pstmt = conn.prepareStatement(sql); 
-             ResultSet rs = pstmt.executeQuery()) {
-            
-            // This transfers the data to your table and closes the connection immediately after
+   try (Connection conn = connectDB(); 
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        
+        // This loop binds values ONLY if you provided them (like in a search)
+        if (values != null && values.length > 0) {
+            for (int i = 0; i < values.length; i++) {
+                pstmt.setObject(i + 1, values[i]);
+            }
+        }
+        
+        try (ResultSet rs = pstmt.executeQuery()) {
             table.setModel(DbUtils.resultSetToTableModel(rs));
-            
-        } catch (SQLException e) {
-            System.out.println("Display Error: " + e.getMessage());
+        }
+    } catch (SQLException e) {
+        System.out.println("Display Error: " + e.getMessage());
         }
     }
 

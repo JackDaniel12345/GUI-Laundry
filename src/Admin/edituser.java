@@ -196,7 +196,30 @@ public class edituser extends javax.swing.JFrame {
     private void statusFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_statusFieldActionPerformed
+public void loadUserData(String id){
+      try{
+        // Use just 'config' since you already imported config.config
+        config con = new config(); 
+        String sql = "SELECT * FROM tbl_users WHERE u_id = '" + id + "'";
+        
+        // This calls the getData method in your config class
+        java.sql.ResultSet rs = con.getData(sql);
 
+        if(rs.next()){
+            idField.setText(rs.getString("u_id"));
+            nameField.setText(rs.getString("name"));
+            emailField.setText(rs.getString("email"));
+            passwordField.setText(rs.getString("password")); 
+            typeBox.setSelectedItem(rs.getString("type"));
+            statusField.setText(rs.getString("status"));
+        }
+        
+        // Always close result sets when done
+        rs.close(); 
+    } catch(java.sql.SQLException e){
+        System.out.println("Database Error: " + e.getMessage());
+        }
+    }
     /**
      * @param args the command line arguments
      */

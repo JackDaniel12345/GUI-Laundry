@@ -5,8 +5,11 @@
  */
 package Admin;
 import config.config;
+import config.session;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import main.login;
 import net.proteanit.sql.DbUtils; // This is for the table model
 
 /**
@@ -19,6 +22,14 @@ public class viewtransaction extends javax.swing.JFrame {
      * Creates new form viewtransaction
      */
     public viewtransaction() {
+         // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
         initComponents();
         displayTable();
     }
@@ -296,9 +307,7 @@ public void displayTable() {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        adduser au = new adduser();
-        au.setVisible(true);
-        this.dispose();
+       
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -314,7 +323,9 @@ public void displayTable() {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+       adminDashboard ad = new adminDashboard();
+       ad.setVisible(true);
+       this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import main.login;
 
 /**
  *
@@ -24,6 +25,14 @@ public class transactionform extends javax.swing.JFrame {
      * Creates new form transactionform
      */
     public transactionform() {
+         // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
         initComponents();
         fillComboBox();
         

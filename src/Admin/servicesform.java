@@ -5,11 +5,13 @@
  */
 package Admin;
 import config.config;
+import config.session;
 import java.sql.SQLException;
 import net.proteanit.sql.DbUtils;
 import java.sql.ResultSet;
 import javax.swing.table.TableModel;
 import javax.swing.JOptionPane;
+import main.login;
 /**
  *
  * @author jackdaniel
@@ -20,6 +22,14 @@ public class servicesform extends javax.swing.JFrame {
      * Creates new form servicesform
      */
     public servicesform() {
+         // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
         initComponents();
         displayData();
         jLabel4.setText("ADMIN DASHBOARD");

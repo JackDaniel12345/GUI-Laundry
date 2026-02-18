@@ -35,9 +35,9 @@ public class usersForm extends javax.swing.JFrame {
     }
     
     void displayUser(){
-     config con = new config();
+    config con = new config();
+    // Correct way to call it for 'Select All'
     String sql = "SELECT u_id, name, email, type, status FROM tbl_users";
-    // Adding the empty comma at the end satisfies the Object... values parameter
     con.displayData(sql, userTable);
     }
     /**
@@ -128,6 +128,11 @@ public class usersForm extends javax.swing.JFrame {
         search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchActionPerformed(evt);
+            }
+        });
+        search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchKeyReleased(evt);
             }
         });
         jPanel7.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 220, 40));
@@ -333,7 +338,9 @@ public class usersForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+     adminDashboard ad = new adminDashboard();
+     ad.setVisible(true);
+     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -362,23 +369,21 @@ public class usersForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       int rowIndex = userTable.getSelectedRow(); // Make sure this matches your table name
+      int rowIndex = userTable.getSelectedRow(); 
 
     if(rowIndex < 0){
         JOptionPane.showMessageDialog(null, "Please select an account to edit!");
     } else {
         try {
             TableModel model = userTable.getModel();
+            // Get the ID from the first column
+            String id = model.getValueAt(rowIndex, 0).toString();
+            
             edituser ed = new edituser();
+            
+            // Pass the ID to a new method in edituser that loads the password
+            ed.loadUserData(id); 
 
-            // Set the fields using correct indices (0-4)
-            ed.idField.setText("" + model.getValueAt(rowIndex, 0));
-            ed.nameField.setText("" + model.getValueAt(rowIndex, 1));
-            ed.emailField.setText("" + model.getValueAt(rowIndex, 2));
-            ed.typeBox.setSelectedItem("" + model.getValueAt(rowIndex, 3));
-            ed.statusField.setText("" + model.getValueAt(rowIndex, 4));
-
-            // Show the edit form and close the current one
             ed.setVisible(true);
             this.dispose();
             
@@ -425,6 +430,19 @@ public class usersForm extends javax.swing.JFrame {
     // This matches the (String, JTable, Object...) signature in your config class
     con.displayData(sql, userTable, searchVal, searchVal, searchVal);
     }//GEN-LAST:event_searchActionPerformed
+
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+       config con = new config();
+    // Use '%' wildcards to find partial matches
+    String searchVal = "%" + search.getText() + "%"; 
+    
+    // Ensure the table name 'tbl_users' matches your database exactly
+    String sql = "SELECT u_id, name, email, type, status FROM tbl_users WHERE "
+               + "u_id LIKE ? OR name LIKE ? OR email LIKE ?";
+               
+    // This fills the table instantly as you type
+    con.displayData(sql, userTable, searchVal, searchVal, searchVal);
+    }//GEN-LAST:event_searchKeyReleased
 
     /**
      * @param args the command line arguments
