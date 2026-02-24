@@ -34,6 +34,7 @@ public class transactionform extends javax.swing.JFrame {
         return; // This prevents initComponents() from ever running
     }
         initComponents();
+        updateServiceList(); // Add this line here
         fillComboBox();
         
         // Get ID from session and set it to the text field
@@ -42,12 +43,11 @@ public class transactionform extends javax.swing.JFrame {
     }
     
     public void fillComboBox() {
-    // Correctly calling the static method from your config class
     try (Connection conn = config.connectDB(); 
-         PreparedStatement pst = conn.prepareStatement("SELECT * FROM tbl_services");
+         PreparedStatement pst = conn.prepareStatement("SELECT s_name FROM tbl_services");
          ResultSet rs = pst.executeQuery()) {
         
-        jComboBox1.removeAllItems(); // Clear existing items first
+        jComboBox1.removeAllItems(); // This prevents duplicating the list
         jComboBox1.addItem("Select Service");
         
         while(rs.next()) {
@@ -100,6 +100,11 @@ private int getServiceId(String serviceName) {
         t_weight = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -166,6 +171,15 @@ private int getServiceId(String serviceName) {
         jPanel7.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Services", "Wash & Fold", "Wash", "Dry & Fold", "Ironing Only" }));
+        jComboBox1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jComboBox1AncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -298,6 +312,30 @@ private int getServiceId(String serviceName) {
     }
     }//GEN-LAST:event_t_weightKeyReleased
 
+    private void jComboBox1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jComboBox1AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1AncestorAdded
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        fillComboBox();
+    }//GEN-LAST:event_formWindowActivated
+public void updateServiceList() {
+    try {
+        config conf = new config();
+        // Clear existing items to avoid duplicates
+        jComboBox1.removeAllItems(); 
+        
+        // Fetch only the names of the services from your table
+        String query = "SELECT s_name FROM tbl_services"; 
+        ResultSet rs = conf.getData(query);
+        
+        while(rs.next()) {
+            jComboBox1.addItem(rs.getString("s_name"));
+        }
+    } catch (SQLException e) {
+        System.out.println("Error updating services: " + e.getMessage());
+    }
+}
     /**
      * @param args the command line arguments
      */

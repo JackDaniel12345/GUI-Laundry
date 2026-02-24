@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package Admin;
+import config.session;
 import javax.swing.JOptionPane;
+import main.login;
 
 /**
  *
@@ -16,6 +18,14 @@ public class editProfile extends javax.swing.JFrame {
      * Creates new form editProfile
      */
     public editProfile() {
+          // 1. Validate FIRST. If uid is 0, stop everything immediately.
+    if (session.uid == 0) {
+        JOptionPane.showMessageDialog(null, "Login First!");
+        login log = new login();
+        log.setVisible(true);
+        this.dispose(); 
+        return; // This prevents initComponents() from ever running
+    }
         initComponents();
     }
 
