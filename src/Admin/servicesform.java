@@ -36,8 +36,9 @@ public class servicesform extends javax.swing.JFrame {
     }
     public void displayData() {
     config conf = new config();
-    // This uses the method inside your config.java to fill the table
-    conf.displayData("SELECT * FROM tbl_services", jTable1);
+    // This query attaches the Peso sign to the s_price column dynamically
+    String sql = "SELECT s_id AS 'Service ID', s_name AS 'Service Name', '₱ ' || s_price AS 'Service Price' FROM tbl_services";
+    conf.displayData(sql, jTable1);
 }
 
     /**
@@ -91,7 +92,7 @@ public class servicesform extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(0, 102, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("LOGOUT");
+        jButton1.setText("BACK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -308,8 +309,10 @@ public class servicesform extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
       config conf = new config();
-     String query = "SELECT * FROM tbl_services WHERE s_name LIKE '%" + jTextField1.getText() + "%'";
-     conf.displayData(query, jTable1);
+    // Format the search results to also include the Peso sign
+    String query = "SELECT s_id AS 'Service ID', s_name AS 'Service Name', '₱ ' || s_price AS 'Service Price' "
+                 + "FROM tbl_services WHERE s_name LIKE '%" + jTextField1.getText() + "%'";
+    conf.displayData(query, jTable1);
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -317,29 +320,33 @@ public class servicesform extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        addservice ad = new addservice();
-        ad.setVisible(true);
-        this.dispose();
+       addservice ad = new addservice();
+    ad.setVisible(true);
+    // This sets a default Peso sign so the user sees it immediately
+    ad.s_price.setText("₱ ");
+    this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int rowIndex = jTable1.getSelectedRow();
+       int rowIndex = jTable1.getSelectedRow();
 
     if (rowIndex < 0) {
         JOptionPane.showMessageDialog(null, "Please select an item to edit!");
     } else {
         try {
-            // Create instance of YOUR new editservice form
             editservice es = new editservice();
             
-            // Pass the data from the table to the editservice fields
+            // 1. Set ID and Name
             es.s_id.setText(jTable1.getValueAt(rowIndex, 0).toString());
             es.s_name.setText(jTable1.getValueAt(rowIndex, 1).toString());
-            es.s_price.setText(jTable1.getValueAt(rowIndex, 2).toString());
             
-            // Make the ID field uneditable so they don't change the primary key
+            // 2. PASTE THE CODE HERE:
+            // This grabs the price from the table (which already has the ₱ sign)
+            String priceWithSign = jTable1.getValueAt(rowIndex, 2).toString();
+            es.s_price.setText(priceWithSign); 
+            
+            // 3. Finalize and show the form
             es.s_id.setEditable(false);
-            
             es.setVisible(true);
             this.dispose();
         } catch (Exception e) {

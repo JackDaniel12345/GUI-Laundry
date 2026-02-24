@@ -210,6 +210,8 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_emailActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    
+                                                
       String userEmail = email.getText();
     String userPass = pass.getText();
 
@@ -222,7 +224,7 @@ public class login extends javax.swing.JFrame {
     // 2. Use a safe query style
     String sql = "SELECT * FROM tbl_users WHERE email = ? AND password = ?";
     
-    // 3. Open connection, run query, and AUTO-CLOSE (this prevents the lock!)
+    // 3. Open connection, run query, and AUTO-CLOSE
     try (java.sql.Connection conn = config.connectDB();
          java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
         
@@ -236,8 +238,8 @@ public class login extends javax.swing.JFrame {
                 session.name = rs.getString("name"); 
                 session.email = rs.getString("email"); 
                 session.type = rs.getString("type");
-                session.Status = rs.getString("status");   // Make sure column names match DB
-                session.password = rs.getString("password"); // Ensure this matches DB
+                session.Status = rs.getString("status");   
+                session.password = rs.getString("password"); 
                 
                 String status = rs.getString("status");
                 String userRole = rs.getString("type");
@@ -245,14 +247,21 @@ public class login extends javax.swing.JFrame {
                 if (!status.equalsIgnoreCase("Active")) {
                     JOptionPane.showMessageDialog(null, "Your account is " + status + ". Contact Admin.");
                 } else {
-                    JOptionPane.showMessageDialog(null, "LOGIN SUCCESS!");
-                    
-                    if (userRole.equalsIgnoreCase("Admin")) {
+                    // --- UPDATED ROLE VALIDATION LOGIC ---
+                    if (userRole.equalsIgnoreCase("Pending")) {
+                        JOptionPane.showMessageDialog(null, "Your account is still being processed. Please wait for the Admin to assign your role.");
+                    } else if (userRole.equalsIgnoreCase("Admin")) {
+                        JOptionPane.showMessageDialog(null, "LOGIN SUCCESS (ADMIN)!");
                         new Admin.adminDashboard().setVisible(true);
-                    } else {
+                        this.dispose();
+                    } else if (userRole.equalsIgnoreCase("Customer")) {
+                        JOptionPane.showMessageDialog(null, "LOGIN SUCCESS (CUSTOMER)!");
                         new Customer.customerDashboard().setVisible(true);
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid Account Type. Please contact support.");
                     }
-                    this.dispose();
+                    // --------------------------------------
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "INVALID CREDENTIALS!");

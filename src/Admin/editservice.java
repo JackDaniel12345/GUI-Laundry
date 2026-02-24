@@ -19,6 +19,7 @@ public class editservice extends javax.swing.JFrame {
      */
     public editservice() {
         initComponents();
+      
     }
 
     /**
@@ -56,7 +57,7 @@ public class editservice extends javax.swing.JFrame {
         jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 113, 100));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel7.setText("ADD SERVICE");
+        jLabel7.setText("EDIT SERVICE");
         jPanel6.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, -1, -1));
 
         jButton4.setBackground(new java.awt.Color(0, 102, 255));
@@ -133,11 +134,14 @@ public class editservice extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       config conf = new config();
+     config conf = new config();
     
-    // SQL query to update the specific service based on its ID
+    // This is the "Safety Net": It removes ALL Peso signs and spaces 
+    // before sending the number to the database.
+    String cleanPrice = s_price.getText().replace("₱", "").trim();
+    
     String sql = "UPDATE tbl_services SET s_name = '" + s_name.getText() 
-               + "', s_price = '" + s_price.getText() 
+               + "', s_price = '" + cleanPrice 
                + "' WHERE s_id = '" + s_id.getText() + "'";
                
     if(conf.insertData(sql) == 1) {
@@ -145,8 +149,6 @@ public class editservice extends javax.swing.JFrame {
         servicesform sf = new servicesform();
         sf.setVisible(true);
         this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(null, "Update Failed!");
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 

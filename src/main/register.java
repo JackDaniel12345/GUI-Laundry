@@ -220,11 +220,32 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_nameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       // 1. Basic Validation: Don't let them submit empty fields
+        if(name.getText().isEmpty() || email.getText().isEmpty() || pass.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Please fill in all fields!");
+            return;
+        }
+
         config con = new config();
-        String sql = "INSERT INTO tbl_users (name, email, password, type, status) VALUES (?, ?, ?, ?, ? )";
-        con.addRecord(sql, name.getText(), email.getText(), pass.getText(), "Admin", "Pending");
         
-        JOptionPane.showMessageDialog(null, "Record Added!");
+        /* 2. Logic Update:
+           We set type to 'Pending' so the Login code blocks them.
+           We set status to 'Pending' as an extra layer of security.
+        */
+        String sql = "INSERT INTO tbl_users (name, email, password, type, status) VALUES (?, ?, ?, ?, ?)";
+        con.addRecord(sql, name.getText(), email.getText(), pass.getText(), "Pending", "Pending");
+        
+        JOptionPane.showMessageDialog(null, "Registration Successful! Please wait for Admin approval.");
+        
+        // 3. Clear the fields after registration
+        name.setText("");
+        email.setText("");
+        pass.setText("");
+        
+        // 4. Redirect them back to Login automatically
+        login lg = new login();
+        lg.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -28,9 +28,13 @@ public class customerProfile extends javax.swing.JFrame {
         displayData();
     }
  public void displayData() {
-      Name.setText(config.session.name);
-      Email.setText(config.session.email);
-      Type.setText(config.session.type);
+     // Fill all labels using the global session data
+    uid.setText("" + config.session.uid); 
+    Name.setText(config.session.name);
+    Email.setText(config.session.email);
+    password.setText(config.session.password);
+    Type.setText(config.session.type);
+    Status.setText(config.session.Status);
  }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -52,12 +56,20 @@ public class customerProfile extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        admin_name = new javax.swing.JLabel();
+        admin_email = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        Type = new javax.swing.JLabel();
         Name = new javax.swing.JLabel();
         Email = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel17 = new javax.swing.JLabel();
+        Type = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        admin_name1 = new javax.swing.JLabel();
+        admin_email1 = new javax.swing.JLabel();
+        uid = new javax.swing.JLabel();
+        password = new javax.swing.JLabel();
+        Status = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -189,28 +201,73 @@ public class customerProfile extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel13.setText("NAME:");
-        jPanel5.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 58, -1, -1));
+        admin_name.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_name.setText("USER ID:");
+        jPanel5.add(admin_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel15.setText("EMAIL:");
-        jPanel5.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, -1, -1));
+        admin_email.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_email.setText("PASSWORD:");
+        jPanel5.add(admin_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
 
-        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel16.setText("TYPE:");
-        jPanel5.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, -1, -1));
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel16.setText("STATUS:");
+        jPanel5.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, -1));
 
-        Type.setText("__________________________________________");
-        jPanel5.add(Type, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, -1, 40));
+        Name.setText("__________________________");
+        jPanel5.add(Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 190, 40));
 
-        Name.setText("__________________________________________");
-        jPanel5.add(Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, -1, 40));
+        Email.setText("__________________________");
+        jPanel5.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 200, 40));
 
-        Email.setText("__________________________________________");
-        jPanel5.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, 40));
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 470, 380));
+        jPanel5.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, 200, 200));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel17.setText("TYPE:");
+        jPanel5.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
+
+        Type.setText("__________________________");
+        jPanel5.add(Type, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 200, 40));
+
+        jButton2.setBackground(new java.awt.Color(0, 102, 255));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("EDIT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 270, 101, 35));
+
+        admin_name1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_name1.setText("NAME:");
+        jPanel5.add(admin_name1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+
+        admin_email1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        admin_email1.setText("EMAIL:");
+        jPanel5.add(admin_email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
+
+        uid.setText("__________________________");
+        jPanel5.add(uid, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
+
+        password.setText("______________________");
+        jPanel5.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 170, -1, -1));
+
+        Status.setText("__________________________");
+        jPanel5.add(Status, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 190, -1));
+
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 580, 440));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/adminbg.jpg"))); // NOI18N
         jLabel12.setText("jLabel12");
@@ -244,7 +301,12 @@ public class customerProfile extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        int confirm = JOptionPane.showConfirmDialog(null, "Log out of your account?", "Confirm", JOptionPane.YES_NO_OPTION);
+    if (confirm == JOptionPane.YES_OPTION) {
+        login log = new login();
+        log.setVisible(true);
+        this.dispose();
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -255,6 +317,21 @@ public class customerProfile extends javax.swing.JFrame {
         this.dispose();
     }
     }//GEN-LAST:event_formWindowActivated
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        editcustomerProfile ep = new editcustomerProfile();
+
+        // This fills the text fields in the Edit form with current session data
+        ep.idField.setText("" + config.session.uid);
+        ep.nameField.setText(config.session.name);
+        ep.emailField.setText(config.session.email);
+        ep.passwordField.setText(config.session.password);
+        ep.typeBox.setSelectedItem(config.session.type); // Sets the dropdown
+        ep.statusField.setText(config.session.Status);
+
+        ep.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,16 +371,21 @@ public class customerProfile extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Email;
     private javax.swing.JLabel Name;
+    private javax.swing.JLabel Status;
     private javax.swing.JLabel Type;
+    private javax.swing.JLabel admin_email;
+    private javax.swing.JLabel admin_email1;
+    private javax.swing.JLabel admin_name;
+    private javax.swing.JLabel admin_name1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
@@ -315,5 +397,8 @@ public class customerProfile extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel password;
+    private javax.swing.JLabel uid;
     // End of variables declaration//GEN-END:variables
 }

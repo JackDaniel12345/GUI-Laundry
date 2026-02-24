@@ -138,11 +138,14 @@ public class addservice extends javax.swing.JFrame {
     if(s_name.getText().isEmpty() || s_price.getText().isEmpty()){
         JOptionPane.showMessageDialog(null, "All fields are required!");
     } else {
-        // 2. Wrap in try-catch to handle database or input errors
         try {
+            // 2. THE FIX: Remove any Peso signs or spaces the user typed
+            // This ensures only the number (e.g., 150.0) goes to the database
+            String cleanPrice = s_price.getText().replace("₱", "").trim();
+
             String sql = "INSERT INTO tbl_services (s_name, s_price) VALUES ('" 
                          + s_name.getText() + "', '" 
-                         + s_price.getText() + "')";
+                         + cleanPrice + "')";
 
             if(conf.insertData(sql) == 1){
                 JOptionPane.showMessageDialog(null, "Service Added Successfully!");

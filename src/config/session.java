@@ -10,11 +10,12 @@ package config;
  * @author jackdaniel
  */
 public class session {
-   public static int uid;      // For User ID
+  public static int uid;
     public static String name;
     public static String email;
     public static String type;
-    public static String Status; // For Account Status
-    public static String password; // For the Password field
-    
+    public static String Status;   // Note the capital 'S' to match your login code
+    public static String password;
 }
+    
+

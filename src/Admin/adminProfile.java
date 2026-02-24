@@ -31,14 +31,14 @@ public class adminProfile extends javax.swing.JFrame {
 
    public void displayData() {
    // These work because they are likely already in your login code
+  uid.setText("" + config.session.uid); 
     Name.setText(config.session.name);
     Email.setText(config.session.email);
-    Type.setText(config.session.type);
     
-    // Add these lines to fix the blank fields
-    uid.setText("" + config.session.uid); 
-    password.setText(config.session.password);  // Check variable name in Navigator
-    Status.setText(config.session.Status); 
+    // Account Details
+    password.setText(config.session.password); 
+    Type.setText(config.session.type);
+    Status.setText(config.session.Status);
    }// Check variable name in Navigator
    
     @SuppressWarnings("unchecked")

@@ -83,4 +83,27 @@ public class config {
         Statement st = conn.createStatement();
         return st.executeQuery(sql);
     }
+  public int updateData(String sql){
+        int num = 0;
+        // Use connectDB() to establish the connection
+        try (Connection conn = connectDB(); 
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            
+            pst.executeUpdate();
+            num = 1;
+            System.out.println("Updated Successfully!");
+        } catch (SQLException ex) {
+            System.out.println("Update Error: " + ex.getMessage());
+        }
+        return num;
+    }
+  public void deleteData(String sql) {
+    try (Connection conn = connectDB(); 
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Deleted Successfully!");
+    } catch (SQLException ex) {
+        System.out.println("Delete Error: " + ex.getMessage());
+    }
+}
 }

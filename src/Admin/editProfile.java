@@ -59,9 +59,9 @@ public class editProfile extends javax.swing.JFrame {
         jLabel6.setText("jLabel3");
         jPanel6.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 113, 100));
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
-        jLabel7.setText("EDIT USER PROFILE");
-        jPanel6.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, -1, -1));
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 30)); // NOI18N
+        jLabel7.setText("EDIT ADMIN PROFILE");
+        jPanel6.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 340, -1));
 
         jButton4.setBackground(new java.awt.Color(0, 102, 255));
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N

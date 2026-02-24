@@ -33,12 +33,18 @@ public class viewtransaction extends javax.swing.JFrame {
         initComponents();
         displayTable();
     }
+    
 public void displayTable() {
-  config conf = new config();
-    // This query pulls EVERY column from the transaction table directly
-    String sql = "SELECT * FROM tbl_transactions"; 
+config conf = new config();
+    // We use the || operator to attach '₱ ' to the total value
+    String sql = "SELECT t_id AS 'Order ID', u_id AS 'User ID', s_id AS 'Service ID', "
+               + "t_weight AS 'Weight', '₱ ' || t_total AS 'Total', t_status AS 'Status' "
+               + "FROM tbl_laundryorders"; 
+    
     conf.displayData(sql, userTable);
 }
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,7 +62,6 @@ public void displayTable() {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         search = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
@@ -125,18 +130,12 @@ public void displayTable() {
                 searchActionPerformed(evt);
             }
         });
-        jPanel7.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 20, 220, 40));
-
-        jButton5.setBackground(new java.awt.Color(0, 102, 255));
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setText("REPORT");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+        search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchKeyReleased(evt);
             }
         });
-        jPanel7.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 101, 35));
+        jPanel7.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 330, 40));
 
         userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -193,7 +192,7 @@ public void displayTable() {
         jButton1.setBackground(new java.awt.Color(0, 102, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("LOGOUT");
+        jButton1.setText("BACK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -247,7 +246,7 @@ public void displayTable() {
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 103, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jLabel6.setText("LAUNDRYORDERS");
+        jLabel6.setText("SERVICES");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 174, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
@@ -255,8 +254,8 @@ public void displayTable() {
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 246, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jLabel8.setText("VIEW TRANSACTION ");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, -1, -1));
+        jLabel8.setText("VIEW LAUNDRY ORDERS ");
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/customer-removebg-preview.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -298,29 +297,88 @@ public void displayTable() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       config conf = new config();
-    // Search for a specific transaction ID or status
-    String sql = "SELECT * FROM tbl_transactions WHERE t_status LIKE '%" + search.getText() + "%'";
-    conf.displayData(sql, userTable);
+      searchKeyReleased(null);
     
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       
+  int rowIndex = userTable.getSelectedRow(); 
+    
+    if(rowIndex < 0){
+        JOptionPane.showMessageDialog(null, "Please select a transaction to edit!");
+    } else {
+        try {
+            // 1. Create the instance
+            edittransaction et = new edittransaction();
+            
+            // 2. Map the Table Model
+            // Column 0: Transaction ID
+            et.t_id.setText(userTable.getModel().getValueAt(rowIndex, 0).toString());
+            
+            // Column 1: User ID
+            et.u_id.setText(userTable.getModel().getValueAt(rowIndex, 1).toString());
+            
+            // Column 2: Service
+            String serviceName = userTable.getModel().getValueAt(rowIndex, 2).toString();
+            et.s_id.setSelectedItem(serviceName);
+            
+            // Column 3: Weight
+            et.t_weight.setText(userTable.getModel().getValueAt(rowIndex, 3).toString());
+            
+            // --- UPDATED LOGIC FOR COLUMN 4 (Total with Peso Sign) ---
+            String totalStr = userTable.getModel().getValueAt(rowIndex, 4).toString();
+
+            // This ensures the Edit Form shows "₱ 200.0" instead of just "200.0"
+            if (!totalStr.contains("₱")) {
+                et.t_total.setText("₱ " + totalStr);
+            } else {
+                et.t_total.setText(totalStr);
+            }
+            // ---------------------------------------------------------
+            
+            // Column 5: Status
+            et.t_status.setText(userTable.getModel().getValueAt(rowIndex, 5).toString());
+            
+            // 3. Settings
+            et.t_id.setEditable(false); 
+            et.setVisible(true);
+            this.dispose();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error passing data: " + e.getMessage());
+        }
+        }
+        
+    
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-          
+       int rowIndex = userTable.getSelectedRow();
+    
+    if (rowIndex < 0) {
+        JOptionPane.showMessageDialog(null, "Please select a transaction to delete!");
+    } else {
+        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Delete", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            config conf = new config();
+            
+            // 1. Get the ID and convert it to an Integer
+            int id = Integer.parseInt(userTable.getValueAt(rowIndex, 0).toString());
+            
+            // 2. Call the CORRECT method name from your config class
+            // Parameters: (id, table_name, column_name)
+            conf.deleteRecord(id, "tbl_laundryorders", "t_id");
+            
+            // 3. Refresh the table
+            displayTable();
+        }
+    }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
        
     }//GEN-LAST:event_searchActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        displayTable();
-    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        adminDashboard ad = new adminDashboard();
@@ -333,6 +391,20 @@ public void displayTable() {
         uf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+       config conf = new config();
+    String query = search.getText();
+    
+    // This query searches through ID, Status, or Service ID for a match
+    String sql = "SELECT t_id AS 'Order ID', u_id AS 'User ID', s_id AS 'Service ID', "
+               + "t_weight AS 'Weight', '₱ ' || t_total AS 'Total', t_status AS 'Status' "
+               + "FROM tbl_laundryorders WHERE t_status LIKE '%" + query + "%' "
+               + "OR t_id LIKE '%" + query + "%' "
+               + "OR s_id LIKE '%" + query + "%'";
+    
+    conf.displayData(sql, userTable);
+    }//GEN-LAST:event_searchKeyReleased
 
     /**
      * @param args the command line arguments
@@ -374,7 +446,6 @@ public void displayTable() {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -401,3 +472,4 @@ public void displayTable() {
     private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }
+

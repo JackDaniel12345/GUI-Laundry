@@ -58,7 +58,22 @@ public class transactionform extends javax.swing.JFrame {
     }
 
     }
-
+private int getServiceId(String serviceName) {
+   int id = 0;
+    try (Connection conn = config.connectDB();
+         PreparedStatement pst = conn.prepareStatement("SELECT s_id FROM tbl_services WHERE s_name = ?")) {
+        
+        pst.setString(1, serviceName); 
+        try (ResultSet rs = pst.executeQuery()) {
+            if (rs.next()) {
+                id = rs.getInt("s_id"); 
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Lookup Error: " + e.getMessage());
+    }
+    return id;
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -201,14 +216,30 @@ public class transactionform extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      config conf = new config();
-    // Use the insertData method which has the built-in "close connection" logic
-    String sql = "INSERT INTO tbl_transactions (u_id, s_id, t_weight, t_total, t_status) "
-               + "VALUES ('" + u_id.getText() + "', '1', '" + t_weight.getText() + "', '" + t_total.getText() + "', 'Pending')";
+     config conf = new config();
+    String selectedName = jComboBox1.getSelectedItem().toString();
+    
+    // 1. Validation
+    if (selectedName.equals("Select Service") || t_weight.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please select a service and enter weight!");
+        return;
+    }
 
-    if(conf.insertData(sql) == 1) {
-        javax.swing.JOptionPane.showMessageDialog(null, "Transaction Submitted!");
-        new customerDashboard().setVisible(true);
+    int actualServiceId = getServiceId(selectedName); 
+    String cleanTotal = t_total.getText().replace("₱ ", "").replace(",", "");
+
+    // 2. Use a better way to insert data if your config supports it, 
+    // or keep your current one but ensure the values are wrapped in single quotes correctly:
+    String sql = "INSERT INTO tbl_laundryorders (u_id, s_id, t_weight, t_total, t_status) "
+               + "VALUES ('" + u_id.getText() + "', '" + actualServiceId + "', '" 
+               + t_weight.getText() + "', '" + cleanTotal + "', 'Pending')";
+
+    if (conf.insertData(sql) == 1) {
+        JOptionPane.showMessageDialog(null, "Order Submitted Successfully!");
+        
+        // Return to Dashboard
+        customerDashboard cd = new customerDashboard();
+        cd.setVisible(true);
         this.dispose();
     }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -231,27 +262,39 @@ public class transactionform extends javax.swing.JFrame {
     }//GEN-LAST:event_t_weightActionPerformed
 
     private void t_weightKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_weightKeyReleased
-       if (jComboBox1.getSelectedIndex() > 0 && !t_weight.getText().isEmpty()) {
+      if (jComboBox1.getSelectedIndex() > 0 && !t_weight.getText().trim().isEmpty()) {
         String selectedService = jComboBox1.getSelectedItem().toString();
         
-        // Using Try-with-resources here ensures the connection CLOSES immediately after finding the price
         try (Connection conn = config.connectDB();
-             PreparedStatement pst = conn.prepareStatement("SELECT s_price FROM tbl_services WHERE s_name = ?")) {
+             // We use 'COLLATE NOCASE' to ensure it matches even if capitalization differs
+             PreparedStatement pst = conn.prepareStatement("SELECT s_price FROM tbl_services WHERE s_name = ? COLLATE NOCASE")) {
             
             pst.setString(1, selectedService);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
+                    // 2. Get price from database
                     double price = rs.getDouble("s_price");
-                    double weight = Double.parseDouble(t_weight.getText());
-                    double total = price * weight;
-                    t_total.setText(String.valueOf(total));
+                    
+                    try {
+                        // 3. Convert text to number and calculate
+                        double weightValue = Double.parseDouble(t_weight.getText());
+                        double totalValue = price * weightValue;
+                        
+                        // 4. Update the Total field with peso sign
+                        t_total.setText("₱ " + String.format("%.2f", totalValue));
+                    } catch (NumberFormatException nfe) {
+                        // If user types a letter, reset total
+                        t_total.setText("₱ 0.00");
+                    }
                 }
             }
-        } catch (Exception e) {
-            t_total.setText("0.0");
+        } catch (SQLException e) {
+            System.out.println("Database Error: " + e.getMessage());
         }
     } else {
-        t_total.setText("0.0");
+        // Reset if weight is deleted or "Select Service" is chosen
+        t_total.setText("₱ 0.00");
+    
     }
     }//GEN-LAST:event_t_weightKeyReleased
 
