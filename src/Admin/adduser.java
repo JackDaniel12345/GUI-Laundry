@@ -54,10 +54,10 @@ public class adduser extends javax.swing.JFrame {
         passwordField = new javax.swing.JTextField();
         statusField = new javax.swing.JTextField();
         emailField = new javax.swing.JTextField();
-        typeBox = new javax.swing.JComboBox<>();
         idField = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
+        typeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,14 +136,6 @@ public class adduser extends javax.swing.JFrame {
         });
         jPanel7.add(emailField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 310, 40));
 
-        typeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Type", "Admin", "Customer" }));
-        typeBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeBoxActionPerformed(evt);
-            }
-        });
-        jPanel7.add(typeBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 310, 40));
-
         idField.setEditable(false);
         jPanel7.add(idField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 310, 40));
 
@@ -151,6 +143,13 @@ public class adduser extends javax.swing.JFrame {
         jLabel12.setText("NAME:");
         jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
         jPanel7.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 310, 40));
+
+        typeField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeFieldActionPerformed(evt);
+            }
+        });
+        jPanel7.add(typeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 212, 310, 40));
 
         jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 580, 390));
 
@@ -190,7 +189,7 @@ public class adduser extends javax.swing.JFrame {
                        nameField.getText(), 
                        emailField.getText(), 
                        passwordField.getText(), 
-                       typeBox.getSelectedItem().toString(), 
+                      typeField.getText(), 
                        statusField.getText());
 
         JOptionPane.showMessageDialog(null, "New User Added Successfully!");
@@ -209,9 +208,9 @@ public class adduser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailFieldActionPerformed
 
-    private void typeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeBoxActionPerformed
+    private void typeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_typeBoxActionPerformed
+    }//GEN-LAST:event_typeFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,6 +266,6 @@ public class adduser extends javax.swing.JFrame {
     public javax.swing.JTextField nameField;
     public javax.swing.JTextField passwordField;
     public javax.swing.JTextField statusField;
-    public javax.swing.JComboBox<String> typeBox;
+    private javax.swing.JTextField typeField;
     // End of variables declaration//GEN-END:variables
 }

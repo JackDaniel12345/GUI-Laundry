@@ -24,6 +24,7 @@ public class edittransaction extends javax.swing.JFrame {
     public edittransaction() {
         initComponents();
         fillComboBox();
+        t_total.setEditable(false); // Prevent manual overrides of the price
         
     }
     public void fillComboBox() {
@@ -100,7 +101,6 @@ public class edittransaction extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         t_weight = new javax.swing.JTextField();
         u_id = new javax.swing.JTextField();
-        t_status = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -109,6 +109,11 @@ public class edittransaction extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        t_date = new javax.swing.JTextField();
+        t_status_combo = new javax.swing.JComboBox<>();
+        t_method_combo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,46 +155,44 @@ public class edittransaction extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 180, 60));
+        jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 330, 180, 50));
 
         t_total.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 t_totalActionPerformed(evt);
             }
         });
-        jPanel7.add(t_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 310, 40));
+        jPanel7.add(t_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 310, 30));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
         jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
+        t_weight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                t_weightActionPerformed(evt);
+            }
+        });
         t_weight.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 t_weightKeyReleased(evt);
             }
         });
-        jPanel7.add(t_weight, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 160, 310, 40));
+        jPanel7.add(t_weight, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 170, 310, 30));
 
         u_id.setEditable(false);
-        jPanel7.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 310, 40));
-
-        t_status.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                t_statusActionPerformed(evt);
-            }
-        });
-        jPanel7.add(t_status, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 260, 310, 40));
+        jPanel7.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 310, 30));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("CUSTOMER ID:");
-        jPanel7.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+        jPanel7.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel3.setText("STATUS:");
-        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
+        jPanel7.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setText("TRANSACTION ID:");
-        jPanel7.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanel7.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         s_id.setEditable(true);
         s_id.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Services" }));
@@ -198,7 +201,7 @@ public class edittransaction extends javax.swing.JFrame {
                 s_idActionPerformed(evt);
             }
         });
-        jPanel7.add(s_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 310, 40));
+        jPanel7.add(s_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 310, 30));
 
         t_id.setEditable(false);
         t_id.addActionListener(new java.awt.event.ActionListener() {
@@ -206,19 +209,34 @@ public class edittransaction extends javax.swing.JFrame {
                 t_idActionPerformed(evt);
             }
         });
-        jPanel7.add(t_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 310, 40));
+        jPanel7.add(t_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 310, 30));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel5.setText("SERVICE ID:");
-        jPanel7.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+        jPanel7.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel8.setText("WEIGHT:");
-        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        jLabel8.setText("DATE:");
+        jPanel7.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel9.setText("TOTAL:");
-        jPanel7.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+        jLabel9.setText("METHOD:");
+        jPanel7.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel10.setText("WEIGHT:");
+        jPanel7.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel11.setText("TOTAL:");
+        jPanel7.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
+        jPanel7.add(t_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, 310, 30));
+
+        t_status_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "In-progress", "Completed" }));
+        jPanel7.add(t_status_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 292, 310, 30));
+
+        t_method_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Cash", "Gcash", "Maya" }));
+        jPanel7.add(t_method_combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 252, 310, 30));
 
         jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 580, 390));
 
@@ -244,11 +262,11 @@ public class edittransaction extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     config conf = new config();
+    config conf = new config();
     String selectedName = s_id.getSelectedItem().toString();
     int actualServiceId = 0;
     
-    // Manual lookup to avoid the lock from the getData method
+    // 1. Lookup the actual service ID based on the name selected in s_id
     try (Connection conn = config.connectDB();
          Statement st = conn.createStatement();
          ResultSet rs = st.executeQuery("SELECT s_id FROM tbl_services WHERE s_name = '" + selectedName + "'")) {
@@ -259,32 +277,33 @@ public class edittransaction extends javax.swing.JFrame {
         System.out.println("Lookup Error: " + e.getMessage());
     }
 
+    // 2. Clean up the total string (remove currency symbols if present)
     String cleanTotal = t_total.getText().replace("₱", "").trim();
+    
+    // 3. Get values from your new ComboBoxes
+    String method = t_method_combo.getSelectedItem().toString(); 
+    String status = t_status_combo.getSelectedItem().toString();
 
-    // Now the database is free for the updateData method
+    // 4. Update the database using the column names from your tbl_laundryorders schema
     String sql = "UPDATE tbl_laundryorders SET "
                + "s_id = '" + actualServiceId + "', "
                + "t_weight = '" + t_weight.getText() + "', "
                + "t_total = '" + cleanTotal + "', " 
-               + "t_status = '" + t_status.getText() + "' "
+               + "t_method = '" + method + "', " 
+               + "t_status = '" + status + "' "
                + "WHERE t_id = '" + t_id.getText() + "'";
 
     if (conf.updateData(sql) == 1) {
-        JOptionPane.showMessageDialog(null, "Laundry Order Updated!");
+        JOptionPane.showMessageDialog(null, "Transaction Updated Successfully!");
         viewtransaction vt = new viewtransaction();
         vt.setVisible(true);
         this.dispose();
-        
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void t_totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_totalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_t_totalActionPerformed
-
-    private void t_statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_statusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_t_statusActionPerformed
 
     private void t_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_idActionPerformed
         // TODO add your handling code here:
@@ -297,6 +316,10 @@ public class edittransaction extends javax.swing.JFrame {
     private void t_weightKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_weightKeyReleased
         calculateTotal();
     }//GEN-LAST:event_t_weightKeyReleased
+
+    private void t_weightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_weightActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_weightActionPerformed
 
     /**
      * @param args the command line arguments
@@ -336,6 +359,8 @@ public class edittransaction extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -349,8 +374,10 @@ public class edittransaction extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     public javax.swing.JComboBox<String> s_id;
+    public javax.swing.JTextField t_date;
     public javax.swing.JTextField t_id;
-    public javax.swing.JTextField t_status;
+    public javax.swing.JComboBox<String> t_method_combo;
+    public javax.swing.JComboBox<String> t_status_combo;
     public javax.swing.JTextField t_total;
     public javax.swing.JTextField t_weight;
     public javax.swing.JTextField u_id;

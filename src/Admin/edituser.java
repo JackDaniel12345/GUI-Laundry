@@ -54,10 +54,10 @@ public class edituser extends javax.swing.JFrame {
         passwordField = new javax.swing.JTextField();
         statusField = new javax.swing.JTextField();
         emailField = new javax.swing.JTextField();
-        typeBox = new javax.swing.JComboBox<>();
         idField = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
+        typeField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,14 +136,6 @@ public class edituser extends javax.swing.JFrame {
         });
         jPanel7.add(emailField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 310, 40));
 
-        typeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Type", "Admin", "Customer" }));
-        typeBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeBoxActionPerformed(evt);
-            }
-        });
-        jPanel7.add(typeBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, 310, 40));
-
         idField.setEditable(false);
         jPanel7.add(idField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 310, 40));
 
@@ -151,6 +143,9 @@ public class edituser extends javax.swing.JFrame {
         jLabel12.setText("NAME:");
         jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
         jPanel7.add(nameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 310, 40));
+
+        typeField.setEditable(false);
+        jPanel7.add(typeField, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 212, 310, 40));
 
         jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 580, 390));
 
@@ -178,7 +173,7 @@ public class edituser extends javax.swing.JFrame {
                    nameField.getText(), 
                    emailField.getText(), 
                    passwordField.getText(), // Changed from passField to passwordField
-                   typeBox.getSelectedItem().toString(), 
+                   typeField.getText().toString(), 
                    statusField.getText(), 
                    idField.getText()); 
     
@@ -199,10 +194,6 @@ public class edituser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailFieldActionPerformed
 
-    private void typeBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_typeBoxActionPerformed
-
     private void statusFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_statusFieldActionPerformed
@@ -220,7 +211,7 @@ public void loadUserData(String id){
             nameField.setText(rs.getString("name"));
             emailField.setText(rs.getString("email"));
             passwordField.setText(rs.getString("password")); 
-            typeBox.setSelectedItem(rs.getString("type"));
+            typeField.setText(rs.getString("type"));
             statusField.setText(rs.getString("status"));
         }
         
@@ -284,6 +275,6 @@ public void loadUserData(String id){
     public javax.swing.JTextField nameField;
     public javax.swing.JTextField passwordField;
     public javax.swing.JTextField statusField;
-    public javax.swing.JComboBox<String> typeBox;
+    private javax.swing.JTextField typeField;
     // End of variables declaration//GEN-END:variables
 }

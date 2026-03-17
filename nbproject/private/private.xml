@@ -3,12 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Customer/paymentForm.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Customer/customerProfile.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/servicesform.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/editProfile.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Customer/customerDashboard.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/usersForm.java</file>
+            <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Customer/selectservicesForm.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/config/session.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/viewtransaction.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/edittransaction.java</file>
@@ -21,24 +22,10 @@
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/adminProfile.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/main/register.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/config/config.java</file>
+            <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Customer/receiptForm.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Admin/editservice.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/Customer/transactionform.java</file>
             <file>file:/C:/Users/jackdaniel/OneDrive/Documents/GUI%20JACK/GUI-Laundry/src/main/login.java</file>
-=======
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Customer/customerDashboard.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/servicesform.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Customer/transactionform.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/adminDashboard.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/adduser.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/adminProfile.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Customer/customerProfile.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/viewtransaction.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/addservice.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/editservice.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/edituser.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/editProfile.java</file>
-            <file>file:/C:/Users/GWAPOKA/Documents/GUI%20JACK/GUI-Laundry/src/Admin/usersForm.java</file>
->>>>>>> 7c1a0b943df354ec34132b37f21907eb03bcb2ac
         </group>
     </open-files>
 </project-private>

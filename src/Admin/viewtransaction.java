@@ -36,10 +36,15 @@ public class viewtransaction extends javax.swing.JFrame {
     
 public void displayTable() {
 config conf = new config();
-    // We use the || operator to attach '₱ ' to the total value
-    String sql = "SELECT t_id AS 'Order ID', u_id AS 'User ID', s_id AS 'Service ID', "
-               + "t_weight AS 'Weight', '₱ ' || t_total AS 'Total', t_status AS 'Status' "
-               + "FROM tbl_laundryorders"; 
+    String sql = "SELECT t_id AS 'Order ID', "         // Index 0
+               + "u_id AS 'Customer ID', "            // Index 1
+               + "s_id AS 'Service ID', "             // Index 2
+               + "t_date AS 'Order Date', "           // Index 3
+               + "t_weight AS 'Weight', "             // Index 4
+               + "t_total AS 'Total Amount', "        // Index 5
+               + "t_method AS 'Method', "             // Index 6 (ADDED)
+               + "t_status AS 'Status' "              // Index 7 (SHIFTED)
+               + "FROM tbl_laundryorders";
     
     conf.displayData(sql, userTable);
 }
@@ -65,23 +70,23 @@ config conf = new config();
         jScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +161,17 @@ config conf = new config();
         jLabel12.setText("jLabel12");
         jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 520));
 
+        jButton5.setBackground(new java.awt.Color(0, 102, 255));
+        jButton5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setText("DELETE");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 101, 35));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -188,20 +204,9 @@ config conf = new config();
         jLabel3.setText("jLabel3");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 11, 113, -1));
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 255));
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("BACK");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(823, 34, 101, 35));
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("CLOTHING LAUNDRY ORDERING SERVICES");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, -1, -1));
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel21.setText("CLOTHING LAUNDRY SERVICE TRACKER");
+        jPanel3.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, -1, -1));
 
         jPanel8.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 110));
 
@@ -212,50 +217,72 @@ config conf = new config();
         jPanel2.setBackground(new java.awt.Color(51, 153, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("VIEW TRANSACTION FORM");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 21)); // NOI18N
+        jLabel4.setText("ADMIN DASHBOARD");
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel5.setText("USERS");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 103, -1, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jLabel6.setText("SERVICES");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 174, -1, -1));
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jLabel7.setText("ABOUT US");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 246, -1, -1));
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jLabel8.setText("VIEW LAUNDRY ORDERS ");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, -1, -1));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 19)); // NOI18N
+        jLabel6.setText("VIEW LAUNDRYORDERS");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/customer-removebg-preview.png"))); // NOI18N
         jLabel2.setText("jLabel2");
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 93, 30, -1));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 30, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/laundryorders-removebg-preview.png"))); // NOI18N
         jLabel9.setText("jLabel2");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 164, 30, -1));
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 30, -1));
 
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/aboutus-removebg-preview.png"))); // NOI18N
-        jLabel10.setText("jLabel2");
-        jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 236, 30, -1));
-
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/contact-removebg-preview.png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/viewlaundryorders.png"))); // NOI18N
         jLabel11.setText("jLabel2");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 308, 30, -1));
+        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 30, -1));
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        jLabel13.setText("CONTACT");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 318, -1, -1));
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel14.setText("PROFILE");
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel16.setText("SERVICES");
+        jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel16MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, -1, -1));
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/profile.png"))); // NOI18N
+        jLabel20.setText("jLabel2");
+        jPanel2.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 30, -1));
+
+        jButton6.setBackground(new java.awt.Color(0, 102, 255));
+        jButton6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
+        jButton6.setText("BACK");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, 101, 35));
 
         jPanel9.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 520));
 
@@ -282,44 +309,35 @@ config conf = new config();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-  int rowIndex = userTable.getSelectedRow(); 
+int rowIndex = userTable.getSelectedRow(); 
     
     if(rowIndex < 0){
         JOptionPane.showMessageDialog(null, "Please select a transaction to edit!");
     } else {
         try {
-            // 1. Create the instance
             edittransaction et = new edittransaction();
             
-            // 2. Map the Table Model
-            // Column 0: Transaction ID
-            et.t_id.setText(userTable.getModel().getValueAt(rowIndex, 0).toString());
+            // Index 0: Order ID
+            et.t_id.setText(userTable.getValueAt(rowIndex, 0).toString());     
+            // Index 1: Customer ID
+            et.u_id.setText(userTable.getValueAt(rowIndex, 1).toString());     
+            // Index 2: Service ID
+            et.s_id.setSelectedItem(userTable.getValueAt(rowIndex, 2).toString());
+            // Index 3: Order Date
+            et.t_date.setText(userTable.getValueAt(rowIndex, 3).toString());
+            // Index 4: Weight
+            et.t_weight.setText(userTable.getValueAt(rowIndex, 4).toString()); 
             
-            // Column 1: User ID
-            et.u_id.setText(userTable.getModel().getValueAt(rowIndex, 1).toString());
+            // Index 5: Total Amount (Cleaning currency symbol)
+            String totalStr = userTable.getValueAt(rowIndex, 5).toString().replace("₱ ", "");
+            et.t_total.setText(totalStr);
             
-            // Column 2: Service
-            String serviceName = userTable.getModel().getValueAt(rowIndex, 2).toString();
-            et.s_id.setSelectedItem(serviceName);
+            // Index 6: Payment Method (NEWLY ADDED)
+            et.t_method_combo.setSelectedItem(userTable.getValueAt(rowIndex, 6).toString());
             
-            // Column 3: Weight
-            et.t_weight.setText(userTable.getModel().getValueAt(rowIndex, 3).toString());
+            // Index 7: Status (SHIFTED FROM 6 TO 7)
+            et.t_status_combo.setSelectedItem(userTable.getValueAt(rowIndex, 7).toString()); 
             
-            // --- UPDATED LOGIC FOR COLUMN 4 (Total with Peso Sign) ---
-            String totalStr = userTable.getModel().getValueAt(rowIndex, 4).toString();
-
-            // This ensures the Edit Form shows "₱ 200.0" instead of just "200.0"
-            if (!totalStr.contains("₱")) {
-                et.t_total.setText("₱ " + totalStr);
-            } else {
-                et.t_total.setText(totalStr);
-            }
-            // ---------------------------------------------------------
-            
-            // Column 5: Status
-            et.t_status.setText(userTable.getModel().getValueAt(rowIndex, 5).toString());
-            
-            // 3. Settings
             et.t_id.setEditable(false); 
             et.setVisible(true);
             this.dispose();
@@ -327,7 +345,8 @@ config conf = new config();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error passing data: " + e.getMessage());
         }
-        }
+    }
+        
         
     
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -360,31 +379,64 @@ config conf = new config();
        
     }//GEN-LAST:event_searchActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       adminDashboard ad = new adminDashboard();
-       ad.setVisible(true);
-       this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+   config conf = new config();
+    String query = search.getText();
+    
+    String sql = "SELECT t_id AS 'Order ID', "
+               + "u_id AS 'Customer ID', "
+               + "s_id AS 'Service ID', "
+               + "t_date AS 'Order Date', "
+               + "t_weight AS 'Weight', "
+               + "t_total AS 'Total Amount', "
+               + "t_method AS 'Method', " // ADDED
+               + "t_status AS 'Status' "
+               + "FROM tbl_laundryorders "
+               + "WHERE t_status LIKE '%" + query + "%' "
+               + "OR t_id LIKE '%" + query + "%' "
+               + "OR s_id LIKE '%" + query + "%' "
+               + "OR t_method LIKE '%" + query + "%' " // Now you can search by method too!
+               + "OR t_date LIKE '%" + query + "%'";    
+    
+    conf.displayData(sql, userTable);
+    }//GEN-LAST:event_searchKeyReleased
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         usersForm uf = new usersForm();
         uf.setVisible(true);
         this.dispose();
+
     }//GEN-LAST:event_jLabel5MouseClicked
 
-    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
-       config conf = new config();
-    String query = search.getText();
-    
-    // This query searches through ID, Status, or Service ID for a match
-    String sql = "SELECT t_id AS 'Order ID', u_id AS 'User ID', s_id AS 'Service ID', "
-               + "t_weight AS 'Weight', '₱ ' || t_total AS 'Total', t_status AS 'Status' "
-               + "FROM tbl_laundryorders WHERE t_status LIKE '%" + query + "%' "
-               + "OR t_id LIKE '%" + query + "%' "
-               + "OR s_id LIKE '%" + query + "%'";
-    
-    conf.displayData(sql, userTable);
-    }//GEN-LAST:event_searchKeyReleased
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        viewtransaction vt = new viewtransaction();
+        vt.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        adminProfile ap = new adminProfile();
+        ap.setVisible(true);
+        ap.displayData();
+        this.dispose();
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
+        servicesform sf = new servicesform();
+        sf.setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_jLabel16MouseClicked
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+         adminDashboard ad = new adminDashboard();
+        ad.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -422,22 +474,22 @@ config conf = new config();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

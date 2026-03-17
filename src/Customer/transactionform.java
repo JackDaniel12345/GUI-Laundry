@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 package Customer;
-import config.config;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import config.config; // This imports your custom config class
 import config.session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import main.login;
 
 /**
@@ -34,30 +32,16 @@ public class transactionform extends javax.swing.JFrame {
         return; // This prevents initComponents() from ever running
     }
         initComponents();
-        updateServiceList(); // Add this line here
-        fillComboBox();
+        
         
         // Get ID from session and set it to the text field
    u_id.setText("" + session.uid); 
     u_id.setEditable(false);
     }
     
-    public void fillComboBox() {
-    try (Connection conn = config.connectDB(); 
-         PreparedStatement pst = conn.prepareStatement("SELECT s_name FROM tbl_services");
-         ResultSet rs = pst.executeQuery()) {
-        
-        jComboBox1.removeAllItems(); // This prevents duplicating the list
-        jComboBox1.addItem("Select Service");
-        
-        while(rs.next()) {
-            jComboBox1.addItem(rs.getString("s_name"));
-        }
-    } catch (SQLException e) { 
-        System.out.println("Combo Box Error: " + e.getMessage());
-    }
+   
 
-    }
+    
 private int getServiceId(String serviceName) {
    int id = 0;
     try (Connection conn = config.connectDB();
@@ -95,9 +79,11 @@ private int getServiceId(String serviceName) {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         u_id = new javax.swing.JTextField();
         t_weight = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -136,8 +122,8 @@ private int getServiceId(String serviceName) {
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
-        jLabel1.setText("SERVICE NAME:");
-        jPanel7.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        jLabel1.setText("SELECT SERVICES:");
+        jPanel7.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(0, 102, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
@@ -148,7 +134,7 @@ private int getServiceId(String serviceName) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 320, 220, 60));
+        jPanel7.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 370, 220, 60));
 
         t_total.setEditable(false);
         t_total.addActionListener(new java.awt.event.ActionListener() {
@@ -156,43 +142,26 @@ private int getServiceId(String serviceName) {
                 t_totalActionPerformed(evt);
             }
         });
-        jPanel7.add(t_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 220, 280, 60));
+        jPanel7.add(t_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 280, 60));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
         jLabel12.setText("TOTAL:");
-        jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, -1, -1));
+        jPanel7.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, -1, -1));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
-        jLabel13.setText("CUSTO... ID");
-        jPanel7.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        jLabel13.setText("CUSTOMER ID:");
+        jPanel7.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
         jLabel14.setText("WEIGHT:");
-        jPanel7.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Services", "Wash & Fold", "Wash", "Dry & Fold", "Ironing Only" }));
-        jComboBox1.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                jComboBox1AncestorAdded(evt);
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        jPanel7.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 280, 60));
+        jPanel7.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, -1, -1));
 
         u_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 u_idActionPerformed(evt);
             }
         });
-        jPanel7.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 280, 60));
+        jPanel7.add(u_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 280, 60));
 
         t_weight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,9 +173,30 @@ private int getServiceId(String serviceName) {
                 t_weightKeyReleased(evt);
             }
         });
-        jPanel7.add(t_weight, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 280, 60));
+        jPanel7.add(t_weight, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 230, 280, 60));
 
-        jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 580, 390));
+        jTextField1.setEditable(false);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 90, 280, 60));
+
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jButton2.setText("SELECT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel7.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 230, 60));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 34)); // NOI18N
+        jLabel2.setText("SERVICE NAME:");
+        jPanel7.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
+
+        jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 580, 440));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -230,42 +220,31 @@ private int getServiceId(String serviceName) {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     config conf = new config();
-    String selectedName = jComboBox1.getSelectedItem().toString();
+    // 1. Get the values from your fields
+    String totalStr = t_total.getText().replace("₱", "").replace(" ", "").replace(",", "");
+    String customerId = u_id.getText();
+    String weight = t_weight.getText();
     
-    // 1. Validation
-    if (selectedName.equals("Select Service") || t_weight.getText().isEmpty()) {
+    // 2. Get the Service ID using your helper method
+    int serviceId = getServiceId(jTextField1.getText());
+
+    // 3. Validation: Ensure we have the data
+    if (totalStr.isEmpty() || weight.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Please select a service and enter weight!");
         return;
     }
 
-    int actualServiceId = getServiceId(selectedName); 
-    String cleanTotal = t_total.getText().replace("₱ ", "").replace(",", "");
-
-    // 2. Use a better way to insert data if your config supports it, 
-    // or keep your current one but ensure the values are wrapped in single quotes correctly:
-    String sql = "INSERT INTO tbl_laundryorders (u_id, s_id, t_weight, t_total, t_status) "
-               + "VALUES ('" + u_id.getText() + "', '" + actualServiceId + "', '" 
-               + t_weight.getText() + "', '" + cleanTotal + "', 'Pending')";
-
-    if (conf.insertData(sql) == 1) {
-        JOptionPane.showMessageDialog(null, "Order Submitted Successfully!");
-        
-        // Return to Dashboard
-        customerDashboard cd = new customerDashboard();
-        cd.setVisible(true);
-        this.dispose();
-    }
+    // 4. CALL THE CONSTRUCTOR (Line 229)
+    // Ensure these 4 arguments match: (String, String, int, String)
+    paymentForm pay = new paymentForm(totalStr, customerId, serviceId, weight);
+    pay.setVisible(true);
+    pay.setLocationRelativeTo(null);
+    this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void t_totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_t_totalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_t_totalActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // Only trigger the calculation logic when the service changes
-        t_weightKeyReleased(null);
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void u_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_u_idActionPerformed
         // TODO add your handling code here:
@@ -276,66 +255,58 @@ private int getServiceId(String serviceName) {
     }//GEN-LAST:event_t_weightActionPerformed
 
     private void t_weightKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_t_weightKeyReleased
-      if (jComboBox1.getSelectedIndex() > 0 && !t_weight.getText().trim().isEmpty()) {
-        String selectedService = jComboBox1.getSelectedItem().toString();
+     // Check if both the Service Name and Weight are filled
+    if (!jTextField1.getText().trim().isEmpty() && !t_weight.getText().trim().isEmpty()) {
+        String selectedService = jTextField1.getText();
         
-        try (Connection conn = config.connectDB();
-             // We use 'COLLATE NOCASE' to ensure it matches even if capitalization differs
-             PreparedStatement pst = conn.prepareStatement("SELECT s_price FROM tbl_services WHERE s_name = ? COLLATE NOCASE")) {
-            
-            pst.setString(1, selectedService);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    // 2. Get price from database
-                    double price = rs.getDouble("s_price");
+      // Corrected SQL for line 239 area
+try (java.sql.Connection conn = config.connectDB();
+     java.sql.PreparedStatement pst = conn.prepareStatement("SELECT s_price FROM tbl_services WHERE s_name = ?")) {
+    
+    pst.setString(1, selectedService);
+    try (java.sql.ResultSet rs = pst.executeQuery()) {
+        if (rs.next()) {
+            double price = rs.getDouble("s_price"); // Use s_price from your DB
+            // ... rest of your calculation logic
                     
-                    try {
-                        // 3. Convert text to number and calculate
-                        double weightValue = Double.parseDouble(t_weight.getText());
-                        double totalValue = price * weightValue;
-                        
-                        // 4. Update the Total field with peso sign
-                        t_total.setText("₱ " + String.format("%.2f", totalValue));
-                    } catch (NumberFormatException nfe) {
-                        // If user types a letter, reset total
-                        t_total.setText("₱ 0.00");
+                   try {
+    String weightText = t_weight.getText().trim();
+    if (weightText.isEmpty()) {
+        t_total.setText("₱ 0.00");
+    } else {
+        double weightValue = Double.parseDouble(weightText);
+        double totalValue = price * weightValue;
+        t_total.setText("₱ " + String.format("%.2f", totalValue));
+    }
+} catch (NumberFormatException nfe) {
+    t_total.setText("₱ 0.00");
                     }
                 }
             }
-        } catch (SQLException e) {
-            System.out.println("Database Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Calculation Error: " + e.getMessage());
         }
     } else {
-        // Reset if weight is deleted or "Select Service" is chosen
         t_total.setText("₱ 0.00");
-    
     }
     }//GEN-LAST:event_t_weightKeyReleased
 
-    private void jComboBox1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jComboBox1AncestorAdded
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1AncestorAdded
-
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        fillComboBox();
+       
     }//GEN-LAST:event_formWindowActivated
-public void updateServiceList() {
-    try {
-        config conf = new config();
-        // Clear existing items to avoid duplicates
-        jComboBox1.removeAllItems(); 
-        
-        // Fetch only the names of the services from your table
-        String query = "SELECT s_name FROM tbl_services"; 
-        ResultSet rs = conf.getData(query);
-        
-        while(rs.next()) {
-            jComboBox1.addItem(rs.getString("s_name"));
-        }
-    } catch (SQLException e) {
-        System.out.println("Error updating services: " + e.getMessage());
-    }
-}
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // We pass 'this' so the selection form knows this is the parent
+    selectservicesForm selectionWindow = new selectservicesForm(this);
+    selectionWindow.setVisible(true);
+    selectionWindow.setLocationRelativeTo(null); // Centers it on screen
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+
     /**
      * @param args the command line arguments
      */
@@ -373,17 +344,19 @@ public void updateServiceList() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    public javax.swing.JTextField jTextField1;
     public javax.swing.JTextField t_total;
     public javax.swing.JTextField t_weight;
     public javax.swing.JTextField u_id;

@@ -212,19 +212,33 @@ public class login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     
                                                 
-      String userEmail = email.getText();
+    String userEmail = email.getText();
     String userPass = pass.getText();
 
-    // 1. Check if fields are empty first
+    // 1. Check if fields are empty
     if (userEmail.isEmpty() || userPass.isEmpty()) {
         JOptionPane.showMessageDialog(null, "Please fill in all fields!");
         return;
     }
 
-    // 2. Use a safe query style
+    // 2. STRICT ADMIN CHECK (Hard-coded bypass)
+if (userEmail.equals("admin@gmail.com") && userPass.equals("admin123")) {
+    JOptionPane.showMessageDialog(null, "LOGIN SUCCESS (ADMIN)!");
+    
+    // Set session data - ADD session.uid HERE
+    session.uid = 1; // Assigning '1' or any non-zero number for the Admin
+    session.email = "admin@gmail.com";
+    session.type = "Admin";
+    session.name = "System Admin";
+    
+    new Admin.adminDashboard().setVisible(true);
+    this.dispose();
+    return;
+    }
+
+    // 3. DATABASE CHECK (For Customers/Users)
     String sql = "SELECT * FROM tbl_users WHERE email = ? AND password = ?";
     
-    // 3. Open connection, run query, and AUTO-CLOSE
     try (java.sql.Connection conn = config.connectDB();
          java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
         
@@ -233,35 +247,37 @@ public class login extends javax.swing.JFrame {
         
         try (java.sql.ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) {
-                // Set Session data
-                session.uid = rs.getInt("u_id");   
-                session.name = rs.getString("name"); 
-                session.email = rs.getString("email"); 
-                session.type = rs.getString("type");
-                session.Status = rs.getString("status");   
-                session.password = rs.getString("password"); 
-                
                 String status = rs.getString("status");
                 String userRole = rs.getString("type");
 
+                // Check if account is active
                 if (!status.equalsIgnoreCase("Active")) {
                     JOptionPane.showMessageDialog(null, "Your account is " + status + ". Contact Admin.");
+                    return;
+                }
+
+                // If someone else is marked as "Admin" in the DB but doesn't have the correct email
+                if (userRole.equalsIgnoreCase("Admin") && !userEmail.equals("admin@gmail.com")) {
+                     JOptionPane.showMessageDialog(null, "Access Denied: Unauthorized Admin account.");
+                     return;
+                }
+
+                // Normal Customer Login
+                if (userRole.equalsIgnoreCase("Customer")) {
+                    // Set Session data
+                    session.uid = rs.getInt("u_id");   
+                    session.name = rs.getString("name"); 
+                    session.email = rs.getString("email"); 
+                    session.type = rs.getString("type");
+                    session.Status = rs.getString("status");   
+                    
+                    JOptionPane.showMessageDialog(null, "LOGIN SUCCESS (CUSTOMER)!");
+                    new Customer.customerDashboard().setVisible(true);
+                    this.dispose();
+                } else if (userRole.equalsIgnoreCase("Pending")) {
+                    JOptionPane.showMessageDialog(null, "Your account is still being processed.");
                 } else {
-                    // --- UPDATED ROLE VALIDATION LOGIC ---
-                    if (userRole.equalsIgnoreCase("Pending")) {
-                        JOptionPane.showMessageDialog(null, "Your account is still being processed. Please wait for the Admin to assign your role.");
-                    } else if (userRole.equalsIgnoreCase("Admin")) {
-                        JOptionPane.showMessageDialog(null, "LOGIN SUCCESS (ADMIN)!");
-                        new Admin.adminDashboard().setVisible(true);
-                        this.dispose();
-                    } else if (userRole.equalsIgnoreCase("Customer")) {
-                        JOptionPane.showMessageDialog(null, "LOGIN SUCCESS (CUSTOMER)!");
-                        new Customer.customerDashboard().setVisible(true);
-                        this.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Invalid Account Type. Please contact support.");
-                    }
-                    // --------------------------------------
+                    JOptionPane.showMessageDialog(null, "Invalid Account Type.");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "INVALID CREDENTIALS!");
