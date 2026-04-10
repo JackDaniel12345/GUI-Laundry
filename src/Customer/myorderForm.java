@@ -4,30 +4,20 @@
  * and open the template in the editor.
  */
 package Customer;
-import config.session;
-import javax.swing.JOptionPane;
-import main.login;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
- * @author GWAPOKA
+ * @author jackdaniel
  */
-public class customerDashboard extends javax.swing.JFrame {
+public class myorderForm extends javax.swing.JFrame {
 
     /**
-     * Creates new form customerDashboard
+     * Creates new form myorderForm
      */
-    public customerDashboard() {
-          // 1. Validate FIRST. If uid is 0, stop everything immediately.
-    if (session.uid == 0) {
-        JOptionPane.showMessageDialog(null, "Login First!");
-        login log = new login();
-        log.setVisible(true);
-        this.dispose(); 
-        return; // This prevents initComponents() from ever running
-    }
-        
+    public myorderForm() {
         initComponents();
+        displayMyOrders(); // Add this line here
     }
 
     /**
@@ -57,17 +47,12 @@ public class customerDashboard extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-        });
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -161,31 +146,31 @@ public class customerDashboard extends javax.swing.JFrame {
 
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel15.setText("\"Ready to process orders\"");
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel15)
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel15)
-                .addContainerGap(20, Short.MAX_VALUE))
-        );
+        jPanel4.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 640, -1));
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 260, 370, 60));
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/2adminlogo.png"))); // NOI18N
-        jLabel13.setText("jLabel13");
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 230, 210));
+        jButton2.setBackground(new java.awt.Color(0, 102, 255));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("VIEW RECEIPT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 190, 35));
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/adminbg.jpg"))); // NOI18N
         jLabel12.setText("jLabel12");
@@ -218,43 +203,59 @@ public class customerDashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-       login lg = new login();
-       lg.setVisible(true);
-       this.dispose();
-
-     
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
         customerProfile cp = new customerProfile();
         cp.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel14MouseClicked
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-       if (session.uid == 0) {
-        JOptionPane.showMessageDialog(null, "Login First!");
-        login log = new login();
-        log.setVisible(true);
-        this.dispose();
-    }
-    }//GEN-LAST:event_formWindowActivated
-
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
-       transactionform tf = new transactionform();
+        transactionform tf = new transactionform();
         tf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel17MouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        customerDashboard cd = new customerDashboard();
+        cd.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-      myorderForm mo = new myorderForm();
-      mo.setVisible(true);
-      this.dispose(); 
+
     }//GEN-LAST:event_jLabel18MouseClicked
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int row = jTable1.getSelectedRow();
+    if(row == -1) {
+        javax.swing.JOptionPane.showMessageDialog(null, "Please select an order first!");
+    } else {
+        // Get the Order ID from the table
+        String orderID = jTable1.getValueAt(row, 0).toString();
+        
+        receiptForm rf = new receiptForm();
+        // You'll need a method in receiptForm called 'fetchData' to load the details using this ID
+        rf.transaction_id = orderID; 
+        rf.fetchReceiptData(); 
+        rf.setVisible(true);
+        this.dispose();
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
+public void displayMyOrders() {
+    try {
+        config.config conf = new config.config();
+        // Uses the session.uid to show only THIS customer's orders
+        String query = "SELECT t_id AS 'Order ID', t_date AS 'Date', t_total AS 'Amount', t_status AS 'Status' " +
+                       "FROM tbl_laundryorders WHERE u_id = '" + config.session.uid + "'";
+        
+        java.sql.ResultSet rs = conf.getData(query);
+        // jTable1 is the name of your table in this form
+        jTable1.setModel(net.proteanit.sql.DbUtils.resultSetToTableModel(rs));
+        
+    } catch (Exception e) {
+        System.out.println("Error Loading Orders: " + e.getMessage());
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -272,33 +273,32 @@ public class customerDashboard extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(customerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(myorderForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(customerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(myorderForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(customerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(myorderForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(customerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(myorderForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new customerDashboard().setVisible(true);
+                new myorderForm().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -312,6 +312,7 @@ public class customerDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

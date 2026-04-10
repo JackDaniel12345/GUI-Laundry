@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import main.login;
 import net.proteanit.sql.DbUtils; // This is for the table model
+import Customer.receiptForm; 
+import javax.swing.JOptionPane;
 
 /**
  *

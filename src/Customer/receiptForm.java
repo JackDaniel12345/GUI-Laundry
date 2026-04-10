@@ -5,15 +5,15 @@
  */
 package Customer;
 
+
 /**
  *
  * @author jackdaniel
  */
 public class receiptForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form receiptForm
-     */
+   public String transaction_id;
+   
     public receiptForm() {
         initComponents();
     }
@@ -122,7 +122,37 @@ public class receiptForm extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(null, e.getMessage());
     }
     }//GEN-LAST:event_jButton2ActionPerformed
+public void fetchReceiptData() {
+   try {
+        config.config conf = new config.config();
+        String query = "SELECT * FROM tbl_laundryorders WHERE t_id = '" + transaction_id + "'";
+        java.sql.ResultSet rs = conf.getData(query);
 
+        if (rs.next()) {
+            // Clearing the area first
+            receiptArea.setText("");
+            
+            // Formatting the receipt look
+            receiptArea.append("******************************************\n");
+            receiptArea.append("        CLOTHING LAUNDRY TRACKER         \n");
+            receiptArea.append("            Cebu City, Philippines       \n");
+            receiptArea.append("******************************************\n\n");
+            
+            receiptArea.append(" Order ID:    " + rs.getString("t_id") + "\n");
+            receiptArea.append(" Date:        " + rs.getString("t_date") + "\n");
+            receiptArea.append("------------------------------------------\n");
+            receiptArea.append(" Total Amount: PHP " + rs.getString("t_total") + "\n");
+            receiptArea.append(" Status:       " + rs.getString("t_status") + "\n");
+            receiptArea.append("\n------------------------------------------\n");
+            receiptArea.append("         Thank you for your business!     \n");
+            
+            // Make it non-editable so the customer can't change their receipt
+            receiptArea.setEditable(false);
+        }
+    } catch (Exception e) {
+        System.out.println("Error formatting receipt: " + e.getMessage());
+    }
+}
     /**
      * @param args the command line arguments
      */

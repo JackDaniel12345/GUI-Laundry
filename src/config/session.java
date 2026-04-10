@@ -14,8 +14,13 @@ public class session {
     public static String name;
     public static String email;
     public static String type;
-    public static String Status;   // Note the capital 'S' to match your login code
+    public static String Status; 
     public static String password;
+
+    // Add this method so session.getUid() works
+    public static int getUid() {
+        return uid;
+    }
 }
     
 
